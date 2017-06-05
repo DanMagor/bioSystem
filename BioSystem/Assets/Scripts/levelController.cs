@@ -10,10 +10,12 @@ public class levelController : MonoBehaviour {
     public int maxYPos = 12;
     public GameObject m_herbivore;
     public GameObject m_predator;
+    public GameObject m_bush;
     public int m_herbivoreAmount = 1;
     public int m_predatorAmount = 1;
-	// Use this for initialization
-	void Start () {
+    public int m_bushAmount = 1;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -41,6 +43,11 @@ public class levelController : MonoBehaviour {
         {
             Destroy(obj);
         }
+            objs = GameObject.FindGameObjectsWithTag("bush");
+        foreach (GameObject obj in objs)
+        {
+            Destroy(obj);
+        }
 
         for (int i = 0; i < m_herbivoreAmount; i++) {
             GameObject herbivore = Instantiate(m_herbivore) as GameObject;
@@ -57,6 +64,15 @@ public class levelController : MonoBehaviour {
             var y = (Random.value - 0.5f) * 24;
             Vector2 pos = new Vector2(x, y);    
             spawnObject(predator, pos);
+        }
+
+        for (int i = 0; i < m_bushAmount; i++)
+        {
+            GameObject bush = Instantiate(m_bush) as GameObject;
+            var x = (Random.value - 0.5f) * 60;
+            var y = (Random.value - 0.5f) * 24;
+            Vector2 pos = new Vector2(x, y);
+            spawnObject(bush, pos);
         }
     }
 
