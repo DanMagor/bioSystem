@@ -13,8 +13,4 @@ public class herbivoreBehavior : MonoBehaviour {
 	void Update () {
 		
 	}
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if ()
-    }
 }
