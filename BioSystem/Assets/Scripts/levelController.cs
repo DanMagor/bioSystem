@@ -62,7 +62,7 @@ public class levelController : MonoBehaviour {
             GameObject predator = Instantiate(m_predator) as GameObject;
             var x = (Random.value - 0.5f) * 60;
             var y = (Random.value - 0.5f) * 24;
-            Vector2 pos = new Vector2(x, y);
+            Vector2 pos = new Vector2(x, y);    
             spawnObject(predator, pos);
         }
 
