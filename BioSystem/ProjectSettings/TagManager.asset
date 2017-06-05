@@ -4,13 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - herbivore
-  - predator
   - point
-<<<<<<< HEAD
   - bush
-=======
->>>>>>> aac866d869ce5932676db7b79e875e7753cf1a3d
   layers:
   - Default
   - TransparentFX
@@ -47,13 +42,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: 1
-    uniqueID: 971152415
-    locked: 0
-  - name: 2
-    uniqueID: 3214215239
-    locked: 0
-  - name: 3
-    uniqueID: 2027127953
     locked: 0

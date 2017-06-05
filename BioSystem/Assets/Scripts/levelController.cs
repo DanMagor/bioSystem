@@ -32,6 +32,11 @@ public class levelController : MonoBehaviour {
         }
     }
 
+
+
+
+
+
     private void respawn() {
             GameObject[] objs;
             objs = GameObject.FindGameObjectsWithTag("herbivore");
