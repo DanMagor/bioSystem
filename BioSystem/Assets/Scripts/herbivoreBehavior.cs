@@ -7,7 +7,7 @@ public class herbivoreBehavior : MonoBehaviour {
     Rigidbody2D m_Rigidbody2D;
     // Use this for initialization
     bool m_move = true;
-    float m_speed = 1f;
+    public float m_speed = 1f;
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -31,9 +31,9 @@ public class herbivoreBehavior : MonoBehaviour {
 
     void moveToPoint()
     {
-        
+
         GameObject[] points = GameObject.FindGameObjectsWithTag("point");
-        GameObject target = points[0];
+        GameObject target = points[Random.Range(0,points.Length)];
         float t_x = target.transform.position.x;
         float t_y = target.transform.position.y;
         float dir_x, dir_y;
