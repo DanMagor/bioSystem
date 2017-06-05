@@ -6,6 +6,8 @@ TagManager:
   tags:
   - herbivore
   - predator
+  - point
+  - bush
   layers:
   - Default
   - TransparentFX
