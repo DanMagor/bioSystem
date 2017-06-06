@@ -8,6 +8,10 @@ public class herbivoreBehavior : MonoBehaviour {
     // Use this for initialization
     bool m_move = true;
     public float m_speed = 1f;
+
+    GameObject m_target;
+    GameObject oldTarget;
+
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -17,7 +21,7 @@ public class herbivoreBehavior : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
         if (checkEvent())
         {
         }
@@ -33,16 +37,24 @@ public class herbivoreBehavior : MonoBehaviour {
     {
 
         GameObject[] points = GameObject.FindGameObjectsWithTag("point");
-        GameObject target = points[Random.Range(0,points.Length)];
-        float t_x = target.transform.position.x;
-        float t_y = target.transform.position.y;
-        float dir_x, dir_y;
-        if (t_x < m_Rigidbody2D.transform.position.x) dir_x = -1; else dir_x = 1;
-        if (t_y < m_Rigidbody2D.transform.position.y) dir_y = -1; else dir_y = 1;
-        m_Rigidbody2D.velocity = new Vector2(m_speed * dir_x, m_speed * dir_y);
+        if (m_target == null)
+        {
+            m_target = points[Random.Range(0, points.Length)];
+            while (m_target.Equals(oldTarget))
+                m_target = points[Random.Range(0, points.Length)];
+        }
+      
+
         
        
-       
+        float step = m_speed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, m_target.transform.position, step);
+        
+
+
+    }
+    void Normalize() {
+
     }
 
     void move() {
@@ -50,6 +62,21 @@ public class herbivoreBehavior : MonoBehaviour {
     } 
     bool checkEvent() {
         return false; 
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        float step = m_speed * Time.deltaTime;
+        if (collision.gameObject.tag == "point")
+        {
+            Debug.Log("Point");
+            oldTarget = collision.gameObject;
+            m_target = null;
+        }
+        else {
+            if (m_target != null)
+                transform.position = Vector2.MoveTowards(transform.position, m_target.transform.position, step);
+        }
     }
 }
 
