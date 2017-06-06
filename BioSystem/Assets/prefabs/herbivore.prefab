@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 50685973363577344}
   - component: {fileID: 58051180913254326}
   - component: {fileID: 114172329856753646}
+  - component: {fileID: 58357377034266278}
   m_Layer: 0
   m_Name: herbivore
   m_TagString: herbivore
@@ -78,6 +79,21 @@ CircleCollider2D:
   m_Offset: {x: 0.010204911, y: 0.13231957}
   serializedVersion: 2
   m_Radius: 1.2278775
+--- !u!58 &58357377034266278
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1582048566238106}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 5
 --- !u!114 &114172329856753646
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -89,7 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae83f329686df8241a8e7975ac0f48bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 10
+  m_speed: 7
+  m_herbivore: {fileID: 1582048566238106}
 --- !u!212 &212932461573327398
 SpriteRenderer:
   m_ObjectHideFlags: 1

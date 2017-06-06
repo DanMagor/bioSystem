@@ -5,7 +5,7 @@ using UnityEngine;
 public class predatorBehavior : MonoBehaviour {
 
 
-    Rigidbody2D m_Rigidbody2D;
+    
     // Use this for initialization
     bool m_move = true;
     public float m_speed = 1f;
@@ -13,7 +13,7 @@ public class predatorBehavior : MonoBehaviour {
     GameObject oldTarget;
     private void Awake()
     {
-        m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        
     }
     void Start()
     {
@@ -68,7 +68,7 @@ public class predatorBehavior : MonoBehaviour {
         float step = m_speed * Time.deltaTime;
         if (collision.gameObject.tag == "point")
         {
-            Debug.Log("Point");
+            
             oldTarget = collision.gameObject;
             m_target = null;
         }

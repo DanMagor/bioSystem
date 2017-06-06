@@ -9,6 +9,7 @@ public class levelController : MonoBehaviour {
     public int minYPos = -12;
     public int maxYPos = 12;
     public GameObject m_herbivore;
+    public static int amountOfHerbivore = 0; //TODO DELETE AMOUNT
     public GameObject m_predator;
     public GameObject m_bush;
     public int m_herbivoreAmount = 1;
@@ -79,7 +80,13 @@ public class levelController : MonoBehaviour {
         }
     }
 
-    private void spawnObject(GameObject obj, Vector2 pos) {
+    public static void spawnObject(GameObject obj, Vector2 pos) {
         obj.transform.position = pos;
+    }
+    public static Vector2 randomPosition() {
+        var x = (Random.value - 0.5f) * 60;
+        var y = (Random.value - 0.5f) * 24;
+        Vector2 pos = new Vector2(x, y);
+        return pos;
     }
 }

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 50677291677009812}
   - component: {fileID: 58767328710386752}
   - component: {fileID: 114643412588666552}
+  - component: {fileID: 58959735924235144}
   m_Layer: 0
   m_Name: predator
   m_TagString: predator
@@ -72,12 +73,27 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.010204911, y: 0.13231957}
   serializedVersion: 2
   m_Radius: 1.2278775
+--- !u!58 &58959735924235144
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1586016196416220}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 7
 --- !u!114 &114643412588666552
 MonoBehaviour:
   m_ObjectHideFlags: 1

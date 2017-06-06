@@ -3,79 +3,178 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class herbivoreBehavior : MonoBehaviour {
-    Rigidbody2D m_Rigidbody2D;
+public class herbivoreBehavior : MonoBehaviour
+{
+    
     // Use this for initialization
-    bool m_move = true;
+    int amountOfBushes;
     public float m_speed = 1f;
-
-    GameObject m_target;
-    GameObject oldTarget;
-
+    public GameObject m_herbivore;
+    AnimalStates currentState;
+    GameObject target;
+    GameObject[] points;
+    enum AnimalStates
+    {
+        MOVE,
+        RUN,
+        EAT
+    }
     private void Awake()
     {
-        m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        amountOfBushes = 0;
+        points = GameObject.FindGameObjectsWithTag("point");
+        
     }
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update() {
-        if (checkEvent())
+
+    void Start()
+    {
+        target = points[Random.Range(0, points.Length)];
+        currentState = AnimalStates.MOVE;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+        moveToTarget();
+    }
+
+
+    void moveToTarget()
+    {
+        float step = m_speed * Time.deltaTime;
+        switch (currentState)
         {
+            case AnimalStates.MOVE:
+                transform.position = Vector2.MoveTowards(transform.position, target.transform.position, step);
+                break;
+            case AnimalStates.EAT:
+                if (target == null)
+                {
+                    currentState = AnimalStates.MOVE;
+                    target = points[Random.Range(0, points.Length)];
+                }
+                else
+
+                    transform.position = Vector2.MoveTowards(transform.position, target.transform.position, step);
+                break;
+            case AnimalStates.RUN:
+                if (target == null)
+                {
+                    currentState = AnimalStates.MOVE;
+                    target = points[Random.Range(0, points.Length)];
+                }
+                else
+                    transform.position = Vector2.MoveTowards(transform.position, target.transform.position, -step);
+                break;
+
         }
-        else {
-            if(m_move)
-            moveToPoint();
-        }
-
-	}
 
 
-    void moveToPoint()
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        GameObject[] points = GameObject.FindGameObjectsWithTag("point");
-        if (m_target == null)
+        if (collision.gameObject == target)
         {
-            m_target = points[Random.Range(0, points.Length)];
-            while (m_target.Equals(oldTarget))
-                m_target = points[Random.Range(0, points.Length)];
+           
+            if (currentState == AnimalStates.MOVE)
+            {
+                GameObject oldPoint = target;
+                while (target == oldPoint)
+                    target = points[Random.Range(0, points.Length)];
+                return;
+            }
+            if (currentState == AnimalStates.EAT)
+            {
+                
+                Destroy(collision.gameObject);
+                amountOfBushes++;
+                if (amountOfBushes == 3)
+                {
+                    levelController.spawnObject(Instantiate(m_herbivore), new Vector2(transform.position.x, transform.position.y));
+                    amountOfBushes = 0;
+                    levelController.amountOfHerbivore++; //TODO : DELETE AMOUNT
+                   
+                }
+
+                currentState = AnimalStates.MOVE;
+                target = points[Random.Range(0, points.Length)];
+                return;
+            }
+            if (currentState == AnimalStates.RUN)
+            {
+                Debug.Log("DEAD");
+                return;
+            }
+
+
         }
+        else
+        {
+            if (collision.gameObject.tag == "bush") {
+                Destroy(collision.gameObject);
+                amountOfBushes++;
+                if (amountOfBushes == 3)
+                {
+                    levelController.spawnObject(Instantiate(m_herbivore), new Vector2(transform.position.x, transform.position.y));
+                    amountOfBushes = 0;
+                    levelController.amountOfHerbivore++; //TODO DELETE AMOUNT
+                    
+                }
+
+                currentState = AnimalStates.MOVE;
+                target = points[Random.Range(0, points.Length)];
+                return;
+            }
+            if (collision.gameObject.tag == "predator") {
+                Debug.Log("DEAD");
+            }
+        }
+        
       
 
-        
-       
-        float step = m_speed * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, m_target.transform.position, step);
-        
-
 
     }
-    void Normalize() {
-
-    }
-
-    void move() {
-
-    } 
-    bool checkEvent() {
-        return false; 
-    }
-    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        float step = m_speed * Time.deltaTime;
-        if (collision.gameObject.tag == "point")
+        switch (collision.gameObject.tag)
         {
-            Debug.Log("Point");
-            oldTarget = collision.gameObject;
-            m_target = null;
+            case "bush":
+                
+                currentState = AnimalStates.EAT;
+                target = collision.gameObject;
+                break;
+            case "predator":
+                Debug.Log("predator");
+                currentState = AnimalStates.RUN;
+                target = collision.gameObject;
+                break;
+            
         }
-        else {
-            if (m_target != null)
-                transform.position = Vector2.MoveTowards(transform.position, m_target.transform.position, step);
+
+
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "predator") {
+            currentState = AnimalStates.MOVE;
+            target = points[Random.Range(0, points.Length)];
         }
     }
 }
