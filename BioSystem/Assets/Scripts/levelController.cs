@@ -18,11 +18,9 @@ public class levelController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	
 
-	}
-
-    private void FixedUpdate()
+    private void Update()
     {
         bool r = Input.GetKeyDown(KeyCode.R);
         if (r) {
