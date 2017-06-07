@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class herbivoreBehavior : MonoBehaviour
 {
-    
+    public float maxHungryTime;
     // Use this for initialization
     int amountOfBushes;
     public float m_speed = 1f;
     public GameObject m_herbivore;
+    float hungryTime;
     AnimalStates currentState;
     GameObject target;
     GameObject[] points;
@@ -21,13 +22,15 @@ public class herbivoreBehavior : MonoBehaviour
     }
     private void Awake()
     {
+        hungryTime = 0;
         amountOfBushes = 0;
         points = GameObject.FindGameObjectsWithTag("point");
-        
+
     }
 
     void Start()
     {
+
         target = points[Random.Range(0, points.Length)];
         currentState = AnimalStates.MOVE;
     }
@@ -36,7 +39,17 @@ public class herbivoreBehavior : MonoBehaviour
     void Update()
     {
         
-        moveToTarget();
+        if (hungryTime >= maxHungryTime)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            moveToTarget();
+        }
+        
+        hungryTime = hungryTime + Time.deltaTime;
+        
     }
 
 
@@ -71,16 +84,7 @@ public class herbivoreBehavior : MonoBehaviour
         }
 
 
-
-
-
-
-
-
-
-
-
-    }
+  }
 
 
 
@@ -91,7 +95,7 @@ public class herbivoreBehavior : MonoBehaviour
 
         if (collision.gameObject == target)
         {
-           
+
             if (currentState == AnimalStates.MOVE)
             {
                 GameObject oldPoint = target;
@@ -101,7 +105,7 @@ public class herbivoreBehavior : MonoBehaviour
             }
             if (currentState == AnimalStates.EAT)
             {
-                
+
                 Destroy(collision.gameObject);
                 amountOfBushes++;
                 if (amountOfBushes == 3)
@@ -109,7 +113,7 @@ public class herbivoreBehavior : MonoBehaviour
                     levelController.spawnObject(Instantiate(m_herbivore), new Vector2(transform.position.x, transform.position.y));
                     amountOfBushes = 0;
                     levelController.amountOfHerbivore++; //TODO : DELETE AMOUNT
-                   
+
                 }
 
                 currentState = AnimalStates.MOVE;
@@ -118,7 +122,7 @@ public class herbivoreBehavior : MonoBehaviour
             }
             if (currentState == AnimalStates.RUN)
             {
-                Debug.Log("DEAD");
+                Destroy(gameObject);
                 return;
             }
 
@@ -126,27 +130,31 @@ public class herbivoreBehavior : MonoBehaviour
         }
         else
         {
-            if (collision.gameObject.tag == "bush") {
+            if (collision.gameObject.tag == "bush")
+            {
                 Destroy(collision.gameObject);
+                hungryTime = 0;
                 amountOfBushes++;
                 if (amountOfBushes == 3)
                 {
                     levelController.spawnObject(Instantiate(m_herbivore), new Vector2(transform.position.x, transform.position.y));
                     amountOfBushes = 0;
                     levelController.amountOfHerbivore++; //TODO DELETE AMOUNT
-                    
+
                 }
 
                 currentState = AnimalStates.MOVE;
                 target = points[Random.Range(0, points.Length)];
                 return;
             }
-            if (collision.gameObject.tag == "predator") {
-                Debug.Log("DEAD");
+            if (collision.gameObject.tag == "predator")
+            {
+                
+                Destroy(gameObject);
             }
         }
-        
-      
+
+
 
 
     }
@@ -155,16 +163,16 @@ public class herbivoreBehavior : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "bush":
-                
+
                 currentState = AnimalStates.EAT;
                 target = collision.gameObject;
                 break;
             case "predator":
-                Debug.Log("predator");
+                
                 currentState = AnimalStates.RUN;
                 target = collision.gameObject;
                 break;
-            
+
         }
 
 
@@ -172,7 +180,9 @@ public class herbivoreBehavior : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "predator") {
+        if (collision.gameObject.tag == "predator")
+        {
+            
             currentState = AnimalStates.MOVE;
             target = points[Random.Range(0, points.Length)];
         }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class levelController : MonoBehaviour {
-
+    float time;
     public int minXPos = -45;
     public int maxXPos = 20;
     public int minYPos = -12;
     public int maxYPos = 12;
+    public float bushColdown;
+    float bushColdownTime;
     public GameObject m_herbivore;
     public static int amountOfHerbivore = 0; //TODO DELETE AMOUNT
     public GameObject m_predator;
@@ -17,8 +19,9 @@ public class levelController : MonoBehaviour {
     public int m_bushAmount = 1;
     // Use this for initialization
     void Start () {
-		
-	}
+        bushColdownTime = 0;
+        time = 0;
+    }
 	
 	// Update is called once per frame
 	
@@ -27,6 +30,21 @@ public class levelController : MonoBehaviour {
     {
         bool r = Input.GetKeyDown(KeyCode.R);
         if (r) {
+            time = 0;
+            respawn();
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+            Debug.Log(time);
+        bushColdownTime += Time.deltaTime;
+        if (bushColdownTime >= bushColdown) {
+            spawnObject(Instantiate(m_bush), randomPosition());
+            bushColdownTime = 0;
+        }
+        time += Time.deltaTime;
+        if (GameObject.FindGameObjectsWithTag("herbivore").Length == 0 || GameObject.FindGameObjectsWithTag("predator").Length == 0)
+        {
+            Debug.Log(time);
+            time = 0;
             respawn();
         }
     }
@@ -35,7 +53,7 @@ public class levelController : MonoBehaviour {
 
 
 
-
+    //TODO Change repeated code
     private void respawn() {
             GameObject[] objs;
             objs = GameObject.FindGameObjectsWithTag("herbivore");
